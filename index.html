@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>尚進美日韓語 · 語言能力評測</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #0B2746;
+    --wine:   #982323;
+    --white:  #FFFFFF;
+    --light:  #F4F6F9;
+    --border: rgba(11,39,70,0.15);
+    --muted:  #6B7A8D;
+    --navy2:  #1a3a5c;
+    --wine2:  #b02a2a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0d1f35;
+    min-height: 100vh;
+    font-family: 'Noto Sans TC', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 20px 60px;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex;
+    margin-bottom: 36px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .nav-btn {
+    padding: 10px 36px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn.active { background: var(--wine); color: #fff; }
+  .nav-btn:not(.active):hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+  .page { display: none; width: 100%; max-width: 700px; }
+  .page.active { display: block; }
+
+  /* ── FORM ── */
+  .form-card {
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .form-header {
+    background: var(--navy);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .logo-hex {
+    width: 44px; height: 44px;
+    flex-shrink: 0;
+  }
+  .form-header-text {}
+  .form-brand {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+  .form-brand-en {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .form-accent-bar { height: 3px; background: linear-gradient(90deg, var(--wine) 0%, #c43a3a 50%, var(--navy) 100%); }
+
+  .form-body { padding: 36px 40px 40px; }
+  .form-section-title {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .field-group { margin-bottom: 24px; }
+  .field-label {
+    display: block;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--navy);
+    font-weight: 500;
+    margin-bottom: 7px;
+  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .text-input, .select-input {
+    width: 100%; padding: 11px 14px;
+    background: var(--light); border: 1.5px solid transparent; border-radius: 3px;
+    font-family: 'Noto Sans TC', sans-serif; font-size: 15px; color: var(--navy);
+    outline: none; transition: border-color 0.2s, background 0.2s;
+    appearance: none;
+  }
+  .text-input:focus, .select-input:focus { border-color: var(--navy); background: #fff; }
+  .select-input { cursor: pointer; }
+  .select-input:disabled { opacity: 0.45; cursor: not-allowed; }
+  .select-wrap { position: relative; }
+  .select-wrap::after { content: '▾'; position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--navy); font-size: 11px; pointer-events: none; }
+
+  .eval-box {
+    padding: 13px 16px;
+    background: #EEF2F7;
+    border-left: 3px solid var(--navy);
+    border-radius: 0 3px 3px 0;
+    font-size: 15px; color: var(--navy); line-height: 1.8;
+    min-height: 64px; font-style: italic;
+    font-family: 'Noto Serif TC', serif;
+  }
+  .eval-box.empty { color: var(--muted); font-style: normal; font-size: 13px; display: flex; align-items: center; }
+
+  .scores-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .score-item {
+    background: var(--light); border-radius: 3px; padding: 14px;
+    border: 1.5px solid transparent; transition: border-color 0.2s;
+  }
+  .score-item:focus-within { border-color: var(--navy); }
+
+  .en-hint {
+    font-size: 10px;
+    color: var(--muted);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    font-family: 'DM Mono', monospace;
+    text-transform: none;
+    opacity: 0.75;
+  }
+  .score-item-label { font-size: 12px; letter-spacing: 1px; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 8px; display: block; text-transform: uppercase; }
+  .score-row { display: flex; align-items: center; gap: 8px; }
+  .score-num {
+    width: 50px; padding: 7px 8px; border: 1.5px solid var(--border); border-radius: 3px;
+    font-size: 20px; font-weight: 700; color: var(--navy); text-align: center;
+    outline: none; background: white; font-family: 'Noto Sans TC', sans-serif;
+    transition: border-color 0.2s;
+  }
+  .score-num:focus { border-color: var(--navy); }
+  .score-num.error { border-color: var(--wine) !important; background: #fff0f0; }
+  .score-error-msg { font-size: 10px; color: var(--wine); margin-top: 5px; display: none; font-family: 'DM Mono', monospace; letter-spacing: 0.5px; }
+  .score-error-msg.show { display: block; }
+  .score-max { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+  .textarea-input {
+    width: 100%; padding: 12px 14px; background: var(--light); border: 1.5px solid transparent; border-radius: 3px;
+    font-family: 'Noto Serif TC', serif; font-size: 15px; color: var(--navy);
+    outline: none; resize: vertical; line-height: 1.75; transition: border-color 0.2s, background 0.2s;
+  }
+  .textarea-input:focus { border-color: var(--navy); background: #fff; }
+  .textarea-input.sm { min-height: 60px; }
+  .textarea-input.lg { min-height: 90px; }
+
+  .submit-btn {
+    width: 100%; padding: 14px; background: var(--navy); border: none; border-radius: 3px;
+    color: white; font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 3px; text-transform: uppercase; cursor: pointer; margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .submit-btn:hover { background: var(--wine); }
+
+  /* ── RESULT PAGE ── */
+  #result-page { max-width: 800px; }
+
+  .result-card {
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+
+  /* Result header */
+  .result-header-band {
+    background: var(--navy);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .rh-left { display: flex; align-items: center; gap: 16px; }
+  .rh-logo { width: 48px; height: 48px; flex-shrink: 0; }
+  .rh-brand { color: white; }
+  .rh-brand-main { font-size: 17px; font-weight: 700; letter-spacing: 1px; margin-bottom: 3px; }
+  .rh-brand-sub { font-size: 8.5px; color: rgba(255,255,255,0.45); letter-spacing: 2.5px; font-family: 'DM Mono', monospace; text-transform: uppercase; }
+  .rh-right { text-align: right; }
+  .rh-date { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; margin-bottom: 10px; }
+  .rh-name-label { font-size: 9px; color: rgba(255,255,255,0.45); letter-spacing: 2px; text-transform: uppercase; font-family: 'DM Mono', monospace; margin-bottom: 3px; }
+  .rh-name { font-size: 22px; font-weight: 700; color: white; margin-bottom: 10px; }
+  .rh-badges { display: flex; gap: 6px; justify-content: flex-end; }
+  .rh-badge {
+    padding: 3px 10px; border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 20px; font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 1px; color: rgba(255,255,255,0.75);
+  }
+
+
+  .student-info-bar {
+    background: #f0f4f8;
+    border-bottom: 1px solid var(--border);
+    padding: 20px 48px;
+  }
+  .sib-left { display: flex; flex-direction: column; gap: 6px; }
+  .sib-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1.5px; margin-bottom: 2px; }
+  .sib-name { font-size: 24px; font-weight: 700; color: var(--navy); line-height: 1.1; }
+  .sib-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+  .sib-badge {
+    padding: 5px 14px; border-radius: 3px;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; font-weight: 700;
+  }
+  .sib-badge.lang { background: var(--navy); color: white; }
+  .sib-badge.level { background: var(--wine); color: white; font-size: 13px; padding: 5px 18px; }
+  .result-accent-bar { height: 4px; background: linear-gradient(90deg, var(--wine) 0%, #c43a3a 40%, var(--navy) 100%); }
+
+  .result-body { padding: 44px 48px 48px; }
+
+  .r-section { margin-bottom: 36px; }
+  .r-section-title {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--wine); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .r-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* Score table */
+  .r-scores-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+  .r-score-cell { background: white; padding: 20px 18px; }
+  .rsc-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .rsc-num { font-size: 38px; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 10px; }
+  .rsc-num span { font-size: 15px; font-weight: 400; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .rsc-bar { height: 3px; background: var(--light); border-radius: 2px; overflow: hidden; }
+  .rsc-bar-fill { height: 100%; background: linear-gradient(90deg, var(--wine), var(--navy)); border-radius: 2px; transition: width 0.9s cubic-bezier(.4,0,.2,1); }
+
+  /* Radar */
+  .radar-wrap {
+    background: var(--light);
+    border-radius: 3px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #radarCanvas { display: block; }
+
+  /* Text sections */
+  .r-text-box {
+    font-size: 15px; color: #2c3e50; line-height: 1.9;
+    padding: 18px 22px; background: var(--light);
+    border-left: 3px solid var(--navy);
+    border-radius: 0 3px 3px 0;
+    font-family: 'Noto Serif TC', serif;
+  }
+  .r-text-box.wine { border-left-color: var(--wine); font-style: italic; }
+
+  /* Footer */
+  .result-footer-band {
+    background: var(--navy);
+    padding: 14px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rf-left { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+  .rf-right { font-family: 'DM Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+
+  /* Export */
+  .export-row { display: flex; gap: 10px; margin-top: 18px; justify-content: flex-end; }
+  .export-btn {
+    padding: 9px 22px; border: 1px solid rgba(255,255,255,0.25); background: transparent;
+    color: rgba(255,255,255,0.65); font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: all 0.2s;
+  }
+  .export-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.5); }
+  .export-btn.primary { background: var(--wine); border-color: var(--wine); color: #fff; }
+  .export-btn.primary:hover { background: var(--wine2); }
+
+  /* ── Improve Checkboxes ── */
+  .improve-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .improve-check-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; color: var(--navy); cursor: pointer;
+    padding: 9px 12px; background: var(--light); border-radius: 3px;
+    border: 1.5px solid transparent; transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .improve-check-item:has(input:checked) { border-color: var(--navy); background: #e8edf4; }
+  .improve-check-item input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--navy); flex-shrink: 0; cursor: pointer; }
+  .improve-check-other { grid-column: 1 / -1; }
+  .improve-other-text { flex: 1; padding: 4px 8px; font-size: 14px; background: white; border: 1.5px solid var(--border); border-radius: 3px; outline: none; font-family: 'Noto Sans TC', sans-serif; }
+  .improve-other-text:disabled { opacity: 0.4; }
+  .improve-other-text:focus { border-color: var(--navy); }
+
+  /* ── Recommendation Section ── */
+  .r-rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .r-rec-item {
+    background: var(--light); border-radius: 3px; padding: 18px 22px;
+    border-left: 3px solid var(--navy);
+  }
+  .r-rec-item.wine { border-left-color: var(--wine); }
+  .r-rec-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .r-rec-value { font-size: 17px; font-weight: 700; color: var(--navy); font-family: 'Noto Sans TC', sans-serif; }
+  .r-rec-value.text { font-size: 15px; font-weight: 400; font-family: 'Noto Serif TC', serif; line-height: 1.8; }
+  .r-improve-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .r-improve-tag {
+    padding: 5px 14px; background: var(--navy); color: white;
+    border-radius: 20px; font-size: 12px; font-family: 'Noto Sans TC', sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .nav, .export-row { display: none !important; }
+    #result-page { display: block !important; max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <button class="nav-btn active" id="form-nav-btn" onclick="showPage('form')">填寫評測</button>
+  <button class="nav-btn" id="result-nav-btn" onclick="showPage('result')">查看結果</button>
+</div>
+
+<!-- ══ FORM PAGE ══ -->
+<div class="page active" id="form-page">
+  <div class="form-card">
+    <div class="form-header">
+      <!-- 六角形 Logo SVG -->
+      <svg class="logo-hex" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="22,2 40,12 40,32 22,42 4,32 4,12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><text x="22" y="29" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="22" font-weight="700" fill="white">S</text></svg>
+      <div class="form-header-text">
+        <div class="form-brand">尚進美日韓語</div>
+        <div class="form-brand-en">Shang Chin English Japanese Korean</div>
+      </div>
+    </div>
+    <div class="form-accent-bar"></div>
+
+    <div class="form-body">
+      <div class="form-section-title">學員基本資料 <span class="en-hint">Student Info</span></div>
+
+      <div class="field-group">
+        <label class="field-label">學員姓名 <span class="en-hint">Student Name</span></label>
+        <input class="text-input" type="text" id="student-name" placeholder="Student name / 學員姓名">
+      </div>
+
+      <div class="field-group">
+        <div class="two-col">
+          <div>
+            <label class="field-label">語系 <span class="en-hint">Language</span></label>
+            <div class="select-wrap">
+              <select class="select-input" id="language" onchange="onLanguageChange()">
+                <option value="">— Select / 請選擇 —</option>
+                <option value="en">美語 English</option>
+                <option value="ja">日語 Japanese</option>
+                <option value="ko">韓語 Korean</option>
+                <option value="fr">法語 French</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">程度 <span class="en-hint">Level</span></label>
+            <div class="select-wrap">
+              <select class="select-input" id="level" onchange="onLevelChange()" disabled>
+                <option value="">— Select language first —</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">程度評鑑 <span class="en-hint">Level Assessment</span></label>
+        <div class="eval-box empty" id="level-eval">Please select language and level first</div>
+      </div>
+
+      <div class="form-section-title" style="margin-top:8px;">分項評分 <span class="en-hint">Scores</span></div>
+
+      <div class="field-group">
+        <div class="scores-grid">
+          <div class="score-item">
+            <span class="score-item-label">發音 <span class="en-hint">Pronunciation</span></span>
+            <div class="score-row"><input class="score-num" type="number" min="1" max="10" step="1" id="score-pronunciation" placeholder="—" value="2" oninput="validateScore(this)"><span class="score-max">/ 10</span></div>
+            <div class="score-error-msg" id="err-pronunciation">請輸入 1–10 整數</div>
+          </div>
+          <div class="score-item">
+            <span class="score-item-label">詞彙 <span class="en-hint">Vocabulary</span></span>
+            <div class="score-row"><input class="score-num" type="number" min="1" max="10" step="1" id="score-vocabulary" placeholder="—" value="2" oninput="validateScore(this)"><span class="score-max">/ 10</span></div>
+            <div class="score-error-msg" id="err-vocabulary">請輸入 1–10 整數</div>
+          </div>
+          <div class="score-item">
+            <span class="score-item-label">文法 <span class="en-hint">Grammar</span></span>
+            <div class="score-row"><input class="score-num" type="number" min="1" max="10" step="1" id="score-grammar" placeholder="—" value="2" oninput="validateScore(this)"><span class="score-max">/ 10</span></div>
+            <div class="score-error-msg" id="err-grammar">請輸入 1–10 整數</div>
+          </div>
+          <div class="score-item">
+            <span class="score-item-label">口說 <span class="en-hint">Speaking</span></span>
+            <div class="score-row"><input class="score-num" type="number" min="1" max="10" step="1" id="score-speaking" placeholder="—" value="2" oninput="validateScore(this)"><span class="score-max">/ 10</span></div>
+            <div class="score-error-msg" id="err-speaking">請輸入 1–10 整數</div>
+          </div>
+          <div class="score-item">
+            <span class="score-item-label">聽力 <span class="en-hint">Listening</span></span>
+            <div class="score-row"><input class="score-num" type="number" min="1" max="10" step="1" id="score-listening" placeholder="—" value="2" oninput="validateScore(this)"><span class="score-max">/ 10</span></div>
+            <div class="score-error-msg" id="err-listening">請輸入 1–10 整數</div>
+          </div>
+          <div class="score-item">
+            <span class="score-item-label">閱讀 <span class="en-hint">Reading</span></span>
+            <div class="score-row"><input class="score-num" type="number" min="1" max="10" step="1" id="score-reading" placeholder="—" value="2" oninput="validateScore(this)"><span class="score-max">/ 10</span></div>
+            <div class="score-error-msg" id="err-reading">請輸入 1–10 整數</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section-title" style="margin-top:8px;">評語與建議 <span class="en-hint">Comments</span></div>
+
+      <div class="field-group">
+        <label class="field-label">講師評語 <span class="en-hint">Instructor Comment</span></label>
+        <textarea class="textarea-input lg" id="comment" placeholder="Overall comments and suggestions for the student..."></textarea>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">推薦教材 <span class="en-hint">Recommended Materials</span></label>
+        <textarea class="textarea-input sm" id="materials" placeholder="Recommended textbooks or learning resources (optional)..."></textarea>
+      </div>
+
+      <div class="form-section-title" style="margin-top:8px;">顧問建議 <span class="en-hint">Consultant Recommendations</span></div>
+
+      <div class="field-group">
+        <div class="two-col">
+          <div>
+            <label class="field-label">建議學習點數 <span class="en-hint">Suggested Points</span></label>
+            <input class="text-input" type="number" min="1" id="rec-pts" placeholder="e.g. 30">
+          </div>
+          <div>
+            <label class="field-label">建議學習級數 <span class="en-hint">Suggested Level</span></label>
+            <div class="select-wrap">
+              <select class="select-input" id="rec-nextlv">
+                <option value="">— 請先選擇語系 —</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">建議提升項目 <span class="en-hint">Areas to Improve</span></label>
+        <div class="improve-checks">
+          <label class="improve-check-item"><input type="checkbox" value="擴充單字量"> 擴充單字量</label>
+          <label class="improve-check-item"><input type="checkbox" value="加強文法正確性"> 加強文法正確性</label>
+          <label class="improve-check-item"><input type="checkbox" value="建立外語思維"> 建立外語思維</label>
+          <label class="improve-check-item"><input type="checkbox" value="情境應用"> 情境應用</label>
+          <label class="improve-check-item"><input type="checkbox" value="增加會話頻率"> 增加會話頻率</label>
+          <label class="improve-check-item"><input type="checkbox" value="習慣發音規則"> 習慣發音規則</label>
+          <label class="improve-check-item"><input type="checkbox" value="培養語感"> 培養語感</label>
+          <label class="improve-check-item improve-check-other">
+            <input type="checkbox" id="improve-other-check" value="其他" onchange="toggleOtherInput(this)"> 其他：
+            <input class="text-input improve-other-text" type="text" id="improve-other-text" placeholder="請輸入" disabled>
+          </label>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">建議學習目標 <span class="en-hint">Suggested Goal</span></label>
+        <textarea class="textarea-input lg" id="rec-goal" placeholder="建議學員的下階段學習目標..."></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="generateResult()">Generate Report →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESULT PAGE ══ -->
+<div class="page" id="result-page">
+  <div class="result-card" id="printable">
+
+    <div class="result-header-band">
+      <div class="rh-left">
+        <svg class="rh-logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="24,2 44,13 44,35 24,46 4,35 4,13" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/><text x="24" y="33" text-anchor="middle" font-family="'Noto Sans TC',sans-serif" font-size="26" font-weight="700" fill="white">S</text></svg>
+        <div class="rh-brand">
+          <div class="rh-brand-main">尚進美日韓語</div>
+          <div class="rh-brand-sub">Shang Chin English Japanese Korean</div>
+          <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:2px;font-family:'DM Mono',monospace;text-transform:uppercase;">語言能力評測報告</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="result-accent-bar"></div>
+
+    <!-- 學員資訊列 -->
+    <div class="student-info-bar">
+      <div class="sib-left">
+        <div class="sib-date" id="result-date"></div>
+        <div class="sib-name" id="result-name">—</div>
+        <div class="sib-badges">
+          <span class="sib-badge lang" id="result-lang-badge"></span>
+          <span class="sib-badge level" id="result-level-badge"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-body">
+
+      <!-- 分項成績 表格 -->
+      <div class="r-section">
+        <div class="r-section-title">分項成績</div>
+        <div class="r-scores-grid">
+          <div class="r-score-cell"><div class="rsc-label">發音</div><div class="rsc-num" id="r-pronunciation">—<span> /10</span></div><div class="rsc-bar"><div class="rsc-bar-fill" id="bar-pronunciation" style="width:0%"></div></div></div>
+          <div class="r-score-cell"><div class="rsc-label">詞彙</div><div class="rsc-num" id="r-vocabulary">—<span> /10</span></div><div class="rsc-bar"><div class="rsc-bar-fill" id="bar-vocabulary" style="width:0%"></div></div></div>
+          <div class="r-score-cell"><div class="rsc-label">文法</div><div class="rsc-num" id="r-grammar">—<span> /10</span></div><div class="rsc-bar"><div class="rsc-bar-fill" id="bar-grammar" style="width:0%"></div></div></div>
+          <div class="r-score-cell"><div class="rsc-label">口說</div><div class="rsc-num" id="r-speaking">—<span> /10</span></div><div class="rsc-bar"><div class="rsc-bar-fill" id="bar-speaking" style="width:0%"></div></div></div>
+          <div class="r-score-cell"><div class="rsc-label">聽力</div><div class="rsc-num" id="r-listening">—<span> /10</span></div><div class="rsc-bar"><div class="rsc-bar-fill" id="bar-listening" style="width:0%"></div></div></div>
+          <div class="r-score-cell"><div class="rsc-label">閱讀</div><div class="rsc-num" id="r-reading">—<span> /10</span></div><div class="rsc-bar"><div class="rsc-bar-fill" id="bar-reading" style="width:0%"></div></div></div>
+        </div>
+      </div>
+
+      <!-- 雷達圖 -->
+      <div class="r-section">
+        <div class="r-section-title">能力雷達圖</div>
+        <div class="radar-wrap">
+          <canvas id="radarCanvas" style="width:460px;height:400px;"></canvas>
+        </div>
+      </div>
+
+      <!-- 程度評鑑 -->
+      <div class="r-section">
+        <div class="r-section-title">程度評鑑</div>
+        <div class="r-text-box wine" id="result-level-eval">—</div>
+      </div>
+
+      <!-- 講師評語 -->
+      <div class="r-section">
+        <div class="r-section-title">講師評語</div>
+        <div class="r-text-box" id="result-comment">—</div>
+      </div>
+
+      <!-- 推薦教材（條件顯示） -->
+      <div class="r-section" id="result-materials-section">
+        <div class="r-section-title">推薦教材</div>
+        <div class="r-text-box" id="result-materials">—</div>
+      </div>
+
+      <!-- 學習建議區塊（條件顯示） -->
+      <div class="r-section" id="result-rec-section" style="display:none;">
+        <div class="r-section-title">學習建議</div>
+        <div class="r-rec-grid">
+
+          <div class="r-rec-item wine" id="result-pts-wrap" style="display:none;">
+            <div class="r-rec-label">建議學習點數</div>
+            <div class="r-rec-value"><span id="result-pts">—</span> <span style="font-size:13px;font-weight:400;color:var(--muted);font-family:'DM Mono',monospace;">pts</span></div>
+          </div>
+
+          <div class="r-rec-item" id="result-nextlv-wrap" style="display:none;">
+            <div class="r-rec-label">建議學習級數</div>
+            <div class="r-rec-value" id="result-nextlv">—</div>
+          </div>
+
+          <div class="r-rec-item" id="result-goal-wrap" style="display:none; grid-column: 1 / -1;">
+            <div class="r-rec-label">建議學習目標</div>
+            <div class="r-rec-value text" id="result-goal">—</div>
+          </div>
+
+          <div class="r-rec-item wine" id="result-improve-wrap" style="display:none; grid-column: 1 / -1;">
+            <div class="r-rec-label">建議提升項目</div>
+            <div class="r-improve-tags" id="result-improve"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="result-footer-band">
+      <div class="rf-left" id="result-footer-date"></div>
+      <div class="rf-right">© 尚進教育訓練有限公司</div>
+    </div>
+  </div>
+
+  <div class="export-row">
+    <button class="export-btn" onclick="window.print()">列印 / 匯出 PDF</button>
+    <button class="export-btn primary" onclick="captureImage()">下載 PNG</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════════
+   資料庫 — 修改文字在此，不影響其他程式碼
+═══════════════════════════════════════════════ */
+const DB = {
+  en: {
+    '自然發音': '目前的字彙量和發音基礎還需要穩定建構，建議從基礎發音規則與最常用生活詞彙開始，以輕鬆互動方式建立學習興趣與信心。',
+    'CEFR A1 前 - S1': '能夠在看過一個畫面後，用英文單字或簡單的句子，進行基本的說明，也能夠與母語人士，進行語速較慢的日常會話或者詞彙上的交流。習得800個左右詞彙。',
+    'CEFR A1 後 - S2': '能夠在看過一個畫面後，用英文單字或簡單的句子，進行基本的說明，也能夠與母語人士，進行語速較慢的日常會話或者詞彙上的交流。習得800個左右詞彙。',
+    'CEFR A2 前 - S3': '能夠簡單閱讀母語人士的刊物，並進行語速較慢的日常會話。能以用英語寫簡歷、進行簡單的工作、理解日常生活中使用基本的詞彙與文章。',
+    'CEFR A2 後 - S4': '能夠簡單閱讀母語人士的刊物，並進行語速較慢的日常會話。能以用英語寫簡歷、進行簡單的工作、理解日常生活中使用基本的詞彙與文章。',
+    'CEFR B1 前 - S5': '能夠使用基礎詞彙進行簡單的交流。能夠表達自己的意見和想法，在學校和公司內做簡單的翻譯工作。能夠準確的用英語接聽電話。能夠用英語在便利店、飲食店勤工儉學。習得2000個左右詞彙。',
+    'CEFR B1 後 - S6': '達成公司職員所必需的交際能力，可進行協商會談、互相意見溝通。書本和雜誌內容大多能理解，可以認識理解看板上的詞彙。能夠理解英語的生活習慣及母語人士的價值觀。在工作中能夠擬定計劃書報告書等，並聽取自己所需情報。',
+    'CEFR C1 - S7': '能夠充分理解母語人士的生活習慣及價值觀，並順利地在本地生活。藉由辭典等工具可理解專業書籍。能用英語進行商品的充分介紹、應對諮詢。能勝任高階主管職位。能夠在理解報紙雜誌中的報導的時事政治問題。',
+    'CEFR C2 -S8': '能夠閱讀並準確理解報紙的社論和研究論文的內容。能夠在與美語人士的會議中進行對等的討論，用專業術語等制訂資料。在海外企業中，具備擔任外國人員工的管理職位的能力。',
+  },
+  ja: {
+    '入門': '能根據周遭等日常生活中常接觸之情境中，從中聽取必要資訊。建議將五十音及發音規則穩定建構，打造良好的學習基礎。',
+    'N5': '能看懂以平假名、片假名或一般日常生活使用之基本漢字所書寫之固定詞句、短文及文章。在課堂上或周遭等日常生活中常接觸之情境中，如為速度較慢之簡短對話，可從中聽取必要資訊。',
+    'N4': '可看懂以基本語彙及漢字描述之貼近日常生活相關話題之文章，並能大致聽懂速度稍慢之日常會話。',
+    'N3': '可看懂日常生活相關內容具體之文章並能掌握報紙標題等之概要資訊。在日常生活情境中所接觸難度稍高之文章經換個方式敘述，便可理解其大意，面對稍接近常速且連貫之對話，經結合談話之具體內容及人物關係等資訊後，便可大致理解。',
+    'N2': '中高級階段。學員能閱讀報紙、理解廣播，應對多數日常及職業情境。建議練習敬語（けいご）的靈活運用，並加強書面表達。',
+    'N1': '高級階段。學員具備接近母語者的日語理解與表達能力，可應對各類複雜情境。建議透過文學作品與專業文獻深化語感與文化理解。',
+  },
+  ko: {
+    '入門': '能根據周遭等日常生活中常接觸之情境中，從中聽取必要資訊。建議將四十音及發音規則穩定建構，打造良好的學習基礎。',
+    '1': '能掌握約800個常用單字，認識基本語法並造出簡單的句子。能理解和書寫簡單的日常生活實用文句並完成「自我介紹、購物、點餐」等日常生活上必需的基礎會話能力，並能理解和表達「個人、家庭、興趣、天氣」等一般個人熟知的話題。',
+    '2': '能掌握約1,500~2,000個單字，理解個人熟知的話題，並以段落表達。除能區分使用正式或非正式場合的用語，也能使用韓語進行「打電話、求助」等日常生活溝通，並於「郵局、銀行」等公共設施使用韓語溝通。',
+    '3': '能理解自己熟悉及社會上熱門的話題，並以段落表達，且可區分及使用口語和書面用語。日常生活溝通沒有困難，具有能使用各種公共設施服務及進行社交活動之基礎語言能力。',
+    '4': '中級二。學員能就多元話題進行較流暢的表達，理解複雜句型。建議接觸韓劇、廣播等真實語料，提升自然語感。',
+    '5': '高級一。學員具備較強的語言應用能力，可在專業或學術情境中溝通。建議練習正式書面寫作與高階閱讀材料。',
+    '6': '高級二。學員韓語能力達到高度流暢，近乎母語水準，能精確表達複雜概念。建議維持廣泛閱讀，並嘗試翻譯或教學等語言應用活動。',
+  },
+  fr: {
+    '發音': '具備基礎的法文發音概念，能模仿簡單單字與短句的發音，但仍需要加強鼻母音、連音（liaison）及語調的自然度。建議持續透過跟讀與聽力練習提升發音準確度。',
+    'A1': '能理解並使用非常基礎的法文單字與簡單句型，例如自我介紹、基本問候與日常簡單表達。理解速度較慢，需要清楚且簡單的語言輸入。',
+    'A2': '可以理解並使用常見的日常表達，例如描述個人資訊、興趣或簡單生活情境。能進行簡單對話，但在句型變化與文法運用上仍較有限。',
+    'B1': '可以理解日常生活與熟悉主題的主要內容，並能用簡單完整句子表達自己的想法。能進行基本對話與描述經驗，但在複雜句型與詞彙運用上仍需加強。',
+    'B2': '能理解較長的對話或文章內容，並能較流暢地表達自己的觀點。可以參與較深入的討論，但在精準表達與文法細節上仍有進步空間。',
+    'C1': '能理解複雜文本與抽象主題，並能清楚、有條理地表達想法。能在多數情境中自然使用法文，但仍可能在細微語感或高階詞彙上需要進一步提升。',
+    'C2': '能幾乎完全理解各類型的法文內容，並能自然、流暢且精確地表達複雜觀點。語言使用接近母語者水準，能靈活運用不同語域與語氣。',
+  }
+};
+
+const LEVEL_OPTIONS = { en:['自然發音','CEFR A1 前 - S1','CEFR A1 後 - S2','CEFR A2 前 - S3','CEFR A2 後 - S4','CEFR B1 前 - S5','CEFR B1 後 - S6','CEFR C1 - S7','CEFR C2 -S8'], ja:['入門','N5','N4','N3','N2','N1'], ko:['入門','1','2','3','4','5','6'], fr:['發音','A1','A2','B1','B2','C1','C2'] };
+const LANG_NAMES   = { en:'美語', ja:'日語', ko:'韓語', fr:'法語' };
+const LEVEL_LABELS = {
+  en: { '自然發音':'自然發音','CEFR A1 前 - S1':'CEFR A1 前 - S1','CEFR A1 後 - S2':'CEFR A1 後 - S2','CEFR A2 前 - S3':'CEFR A2 前 - S3','CEFR A2 後 - S4':'CEFR A2 後 - S4','CEFR B1 前 - S5':'CEFR B1 前 - S5','CEFR B1 後 - S6':'CEFR B1 後 - S6','CEFR C1 - S7':'CEFR C1 - S7','CEFR C2 -S8':'CEFR C2 -S8' },
+  ja: { '入門':'入門級','N5':'JLPT N5','N4':'JLPT N4','N3':'JLPT N3','N2':'JLPT N2','N1':'JLPT N1' },
+  ko: { '入門':'入門級','1':'TOPIK 1級','2':'TOPIK 2級','3':'TOPIK 3級','4':'TOPIK 4級','5':'TOPIK 5級','6':'TOPIK 6級' },
+  fr: { '發音':'發音級','A1':'CEFR A1','A2':'CEFR A2','B1':'CEFR B1','B2':'CEFR B2','C1':'CEFR C1','C2':'CEFR C2' },
+};
+// Form display labels (with English)
+const LEVEL_LABELS_FORM = {
+  en: { '自然發音':'自然發音 Phonics','CEFR A1 前 - S1':'CEFR A1 前 - S1 · Beginner','CEFR A1 後 - S2':'CEFR A1 後 - S2 · Beginner','CEFR A2 前 - S3':'CEFR A2 前 - S3 · Elementary','CEFR A2 後 - S4':'CEFR A2 後 - S4 · Elementary','CEFR B1 前 - S5':'CEFR B1 前 - S5 · Intermediate','CEFR B1 後 - S6':'CEFR B1 後 - S6 · Upper-Intermediate','CEFR C1 - S7':'CEFR C1 - S7 · Advanced','CEFR C2 -S8':'CEFR C2 -S8 · Mastery' },
+  ja: { '入門':'入門級 Beginner','N5':'JLPT N5 · Beginner','N4':'JLPT N4 · Elementary','N3':'JLPT N3 · Intermediate','N2':'JLPT N2 · Upper-Intermediate','N1':'JLPT N1 · Advanced' },
+  ko: { '入門':'入門級 Beginner','1':'TOPIK 1級 · Beginner','2':'TOPIK 2級 · Elementary','3':'TOPIK 3級 · Intermediate','4':'TOPIK 4級 · Upper-Intermediate','5':'TOPIK 5級 · Advanced','6':'TOPIK 6級 · Mastery' },
+  fr: { '發音':'發音級 Pronunciation','A1':'CEFR A1 · Beginner','A2':'CEFR A2 · Elementary','B1':'CEFR B1 · Intermediate','B2':'CEFR B2 · Upper-Intermediate','C1':'CEFR C1 · Advanced','C2':'CEFR C2 · Mastery' },
+};
+
+/* ── UI helpers ── */
+function onLanguageChange() {
+  const lang = document.getElementById('language').value;
+  const sel  = document.getElementById('level');
+  sel.innerHTML = '<option value="">— Select level —</option>';
+  sel.disabled  = !lang;
+  if (lang) LEVEL_OPTIONS[lang].forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt; o.textContent = LEVEL_LABELS_FORM[lang][opt]; sel.appendChild(o);
+  });
+
+  // 同步更新建議學習級數選單
+  const recSel = document.getElementById('rec-nextlv');
+  recSel.innerHTML = '<option value="">— 請選擇 —</option>';
+  if (lang) LEVEL_OPTIONS[lang].forEach(opt => {
+    const o = document.createElement('option');
+    o.value = LEVEL_LABELS[lang][opt];
+    o.textContent = LEVEL_LABELS_FORM[lang][opt];
+    recSel.appendChild(o);
+  });
+
+  updateEval();
+}
+function onLevelChange() { updateEval(); }
+function updateEval() {
+  const lang = document.getElementById('language').value;
+  const lv   = document.getElementById('level').value;
+  const box  = document.getElementById('level-eval');
+  if (lang && lv && DB[lang]?.[lv]) { box.textContent = DB[lang][lv]; box.classList.remove('empty'); }
+  else { box.textContent = '請先選擇語系與程度'; box.classList.add('empty'); }
+}
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(name+'-page').classList.add('active');
+  document.getElementById(name+'-nav-btn').classList.add('active');
+}
+function setScore(id, n) {
+  document.getElementById('r-'+id).innerHTML = n + '<span> /10</span>';
+  document.getElementById('bar-'+id).style.width = (n/10*100)+'%';
+}
+
+/* ── Radar Chart ── */
+function drawRadar(scores) {
+  const canvas = document.getElementById('radarCanvas');
+  const ctx    = canvas.getContext('2d');
+  const dpr    = window.devicePixelRatio || 2;
+  const W = 460, H = 400;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  const labels = ['發音','詞彙','文法','口說','聽力','閱讀'];
+  const MIN_R = 0.30;
+  const values = [scores.pronunciation, scores.vocabulary, scores.grammar,
+                  scores.speaking, scores.listening, scores.reading].map(v => Math.max((parseInt(v)||0)/10, MIN_R));
+  const N      = labels.length;
+  const cx     = W/2, cy = H/2 - 10;
+  const R      = Math.min(W, H)*0.36;
+  const step   = (2*Math.PI) / N;
+  const offset = -Math.PI/2;
+
+  const pt = (i, r) => ({
+    x: cx + r * Math.cos(offset + i*step),
+    y: cy + r * Math.sin(offset + i*step)
+  });
+
+  // Grid rings
+  for (let ring = 1; ring <= 5; ring++) {
+    const r = R * ring / 5;
+    ctx.beginPath();
+    for (let i = 0; i < N; i++) {
+      const p = pt(i, r);
+      i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = ring === 5 ? 'rgba(11,39,70,0.2)' : 'rgba(11,39,70,0.09)';
+    ctx.lineWidth   = ring === 5 ? 1.5 : 1;
+    ctx.stroke();
+
+    // Ring label (2,4,6,8,10)
+    if (ring % 2 === 0) {
+      ctx.fillStyle   = 'rgba(107,122,141,0.7)';
+      ctx.font        = '12px DM Mono, monospace';
+      ctx.textAlign   = 'center';
+      ctx.fillText(ring*2, cx + 4, cy - r + 3);
+    }
+  }
+
+  // Spokes
+  for (let i = 0; i < N; i++) {
+    const p = pt(i, R);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(p.x, p.y);
+    ctx.strokeStyle = 'rgba(11,39,70,0.12)';
+    ctx.lineWidth   = 1;
+    ctx.stroke();
+  }
+
+  // Data fill
+  ctx.beginPath();
+  for (let i = 0; i < N; i++) {
+    const p = pt(i, R * values[i]);
+    i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+  }
+  ctx.closePath();
+  ctx.fillStyle   = 'rgba(11,39,70,0.12)';
+  ctx.fill();
+  ctx.strokeStyle = '#0B2746';
+  ctx.lineWidth   = 2;
+  ctx.stroke();
+
+  // Data dots
+  for (let i = 0; i < N; i++) {
+    const p = pt(i, R * values[i]);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 4.5, 0, 2*Math.PI);
+    ctx.fillStyle   = '#982323';
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth   = 1.5;
+    ctx.stroke();
+  }
+
+  // Axis labels
+  const labelR = R + 32;
+  ctx.font      = 'bold 15px "Noto Sans TC", sans-serif';
+  ctx.fillStyle = '#0B2746';
+  for (let i = 0; i < N; i++) {
+    const p = pt(i, labelR);
+    ctx.textAlign    = (p.x < cx - 5) ? 'right' : (p.x > cx + 5) ? 'left' : 'center';
+    ctx.textBaseline = (p.y < cy - 5) ? 'bottom' : (p.y > cy + 5) ? 'top' : 'middle';
+    ctx.fillText(labels[i], p.x, p.y);
+  }
+
+  // Level label — top-left corner, text only
+  const centerLevel = document.getElementById('result-level-badge').textContent || '';
+  const centerLang  = document.getElementById('result-lang-badge').textContent  || '';
+  if (centerLevel) {
+    const tx = 12, ty = 14;
+    ctx.textAlign    = 'left';
+    ctx.textBaseline = 'top';
+
+    ctx.font      = 'bold 17px "DM Mono", monospace';
+    ctx.fillStyle = '#0B2746';
+    ctx.fillText(centerLevel, tx, ty);
+
+    ctx.font      = '13px "Noto Sans TC", sans-serif';
+    ctx.fillStyle = '#982323';
+    ctx.fillText(centerLang, tx, ty + 20);
+  }
+}
+
+/* ── Score Validation ── */
+function validateScore(input) {
+  const id  = input.id.replace('score-', '');
+  const val = input.value;
+  const num = Number(val);
+  const err = document.getElementById('err-' + id);
+  const invalid = val === '' || !Number.isInteger(num) || num < 1 || num > 10;
+  input.classList.toggle('error', invalid && val !== '');
+  err.classList.toggle('show', invalid && val !== '');
+}
+
+function allScoresValid() {
+  const keys = ['pronunciation','vocabulary','grammar','speaking','listening','reading'];
+  let valid = true;
+  keys.forEach(k => {
+    const input = document.getElementById('score-' + k);
+    const val   = input.value;
+    const num   = Number(val);
+    const invalid = val === '' || !Number.isInteger(num) || num < 1 || num > 10;
+    const err   = document.getElementById('err-' + k);
+    input.classList.toggle('error', invalid);
+    err.classList.toggle('show', invalid);
+    if (invalid) valid = false;
+  });
+  return valid;
+}
+
+/* ── Toggle "其他" text input ── */
+function toggleOtherInput(cb) {
+  const txt = document.getElementById('improve-other-text');
+  txt.disabled = !cb.checked;
+  if (!cb.checked) txt.value = '';
+}
+
+/* ── Generate ── */
+function generateResult() {
+  if (!allScoresValid()) return;
+  const name      = document.getElementById('student-name').value.trim() || '未填寫';
+  const lang      = document.getElementById('language').value;
+  const level     = document.getElementById('level').value;
+  const comment   = document.getElementById('comment').value.trim() || '—';
+  const materials = document.getElementById('materials').value.trim();
+  const keys      = ['pronunciation','vocabulary','grammar','speaking','listening','reading'];
+  const scores    = keys.reduce((a,k) => { a[k] = document.getElementById('score-'+k).value; return a; }, {});
+
+  // Header
+  document.getElementById('result-name').textContent = name;
+  const now = new Date();
+  const d   = now.getFullYear()+' / '+String(now.getMonth()+1).padStart(2,'0')+' / '+String(now.getDate()).padStart(2,'0');
+  document.getElementById('result-date').textContent        = d;
+  document.getElementById('result-footer-date').textContent = 'Issued ' + d;
+  document.getElementById('result-lang-badge').textContent  = LANG_NAMES[lang] || '—';
+  document.getElementById('result-level-badge').textContent = (lang && level) ? LEVEL_LABELS[lang][level] : '—';
+
+  // Scores
+  keys.forEach(k => setScore(k, parseInt(scores[k])||0));
+
+  // Radar
+  drawRadar(scores);
+
+  // Text blocks
+  document.getElementById('result-level-eval').textContent = (lang && level && DB[lang]?.[level]) ? DB[lang][level] : '—';
+  document.getElementById('result-comment').textContent    = comment;
+
+  const matSection = document.getElementById('result-materials-section');
+  if (materials) {
+    document.getElementById('result-materials').textContent = materials;
+    matSection.style.display = '';
+  } else {
+    matSection.style.display = 'none';
+  }
+
+  // 顧問建議欄位
+  const pts    = document.getElementById('rec-pts').value.trim();
+  const nextlv = document.getElementById('rec-nextlv').value.trim();
+  const goal   = document.getElementById('rec-goal').value.trim();
+  const checks = [...document.querySelectorAll('.improve-checks input[type="checkbox"]:checked')];
+  const improveItems = checks.map(cb => {
+    if (cb.id === 'improve-other-check') {
+      const txt = document.getElementById('improve-other-text').value.trim();
+      return txt ? '其他：' + txt : '';
+    }
+    return cb.value;
+  }).filter(Boolean);
+  const improve = improveItems.join(',');
+
+  renderRecommendations({ pts, nextlv, goal, improve });
+
+  showPage('result');
+}
+
+/* ── Export ── */
+function captureImage() {
+  html2canvas(document.getElementById('printable'), { scale:2, backgroundColor:'#fff', useCORS:true })
+    .then(canvas => {
+      const a = document.createElement('a');
+      a.download = '尚進評測報告.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    });
+}
+
+/* ── Render Recommendations (URL-only fields) ── */
+function renderRecommendations(q) {
+  const recSection = document.getElementById('result-rec-section');
+  let anyVisible = false;
+
+  // 建議學習點數
+  const ptsWrap = document.getElementById('result-pts-wrap');
+  if (q.pts) {
+    document.getElementById('result-pts').textContent = q.pts;
+    ptsWrap.style.display = '';
+    anyVisible = true;
+  } else { ptsWrap.style.display = 'none'; }
+
+  // 建議學習級數
+  const nextlvWrap = document.getElementById('result-nextlv-wrap');
+  if (q.nextlv) {
+    document.getElementById('result-nextlv').textContent = q.nextlv;
+    nextlvWrap.style.display = '';
+    anyVisible = true;
+  } else { nextlvWrap.style.display = 'none'; }
+
+  // 建議學習目標
+  const goalWrap = document.getElementById('result-goal-wrap');
+  if (q.goal) {
+    document.getElementById('result-goal').textContent = q.goal;
+    goalWrap.style.display = '';
+    anyVisible = true;
+  } else { goalWrap.style.display = 'none'; }
+
+  // 建議提升項目（逗號分隔 → tags）
+  const improveWrap = document.getElementById('result-improve-wrap');
+  if (q.improve) {
+    const container = document.getElementById('result-improve');
+    container.innerHTML = '';
+    q.improve.split(',').map(s => s.trim()).filter(Boolean).forEach(item => {
+      const tag = document.createElement('span');
+      tag.className = 'r-improve-tag';
+      tag.textContent = item;
+      container.appendChild(tag);
+    });
+    improveWrap.style.display = '';
+    anyVisible = true;
+  } else { improveWrap.style.display = 'none'; }
+
+  recSection.style.display = anyVisible ? '' : 'none';
+}
+
+/* ── URL Parameter Auto-Load ── */
+function getParams() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    name    : p.get('name')    || '',
+    lang    : p.get('lang')    || '',
+    level   : p.get('level')   || '',
+    p1      : p.get('p1')      || '',
+    p2      : p.get('p2')      || '',
+    p3      : p.get('p3')      || '',
+    p4      : p.get('p4')      || '',
+    p5      : p.get('p5')      || '',
+    p6      : p.get('p6')      || '',
+    comment : p.get('comment') || '',
+    materials: p.get('materials') || '',
+    pts     : p.get('pts')     || '',
+    improve : p.get('improve') || '',
+    goal    : p.get('goal')    || '',
+    nextlv  : p.get('nextlv')  || '',
+  };
+}
+
+function autoLoadFromURL() {
+  const q = getParams();
+  if (!q.name && !q.lang) return; // no params, stay on form
+
+  // Map short keys to full score keys
+  const scoreMap = {
+    pronunciation: q.p1,
+    vocabulary:    q.p2,
+    grammar:       q.p3,
+    speaking:      q.p4,
+    listening:     q.p5,
+    reading:       q.p6,
+  };
+
+  // Fill form fields (needed for generateResult to read)
+  document.getElementById('student-name').value = q.name;
+
+  const langSel = document.getElementById('language');
+  langSel.value = q.lang;
+  onLanguageChange();
+
+  setTimeout(() => {
+    document.getElementById('level').value = q.level;
+    updateEval();
+
+    Object.entries(scoreMap).forEach(([k, v]) => {
+      document.getElementById('score-' + k).value = v || '2';
+    });
+
+    document.getElementById('comment').value   = q.comment;
+    document.getElementById('materials').value = q.materials;
+
+    // 顧問建議欄位回填
+    document.getElementById('rec-pts').value    = q.pts;
+    document.getElementById('rec-nextlv').value = q.nextlv;
+    document.getElementById('rec-goal').value   = q.goal;
+    if (q.improve) {
+      q.improve.split(',').map(s => s.trim()).filter(Boolean).forEach(item => {
+        const cb = [...document.querySelectorAll('.improve-checks input[type="checkbox"]')]
+          .find(c => c.value === item || (item.startsWith('其他：') && c.id === 'improve-other-check'));
+        if (cb) {
+          cb.checked = true;
+          if (cb.id === 'improve-other-check') {
+            const txt = document.getElementById('improve-other-text');
+            txt.disabled = false;
+            txt.value = item.replace('其他：', '');
+          }
+        }
+      });
+    }
+
+    // Auto-generate result
+    generateResult();
+  }, 100);
+}
+
+// Run on page load
+window.addEventListener('DOMContentLoaded', autoLoadFromURL);
+</script>
+</body>
+</html>
