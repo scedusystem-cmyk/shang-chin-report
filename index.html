@@ -377,6 +377,8 @@
                 <option value="ja">日語 Japanese</option>
                 <option value="ko">韓語 Korean</option>
                 <option value="fr">法語 French</option>
+                <option value="es">西班牙語 Spanish</option>
+                <option value="de">德語 German</option>
               </select>
             </div>
           </div>
@@ -645,16 +647,36 @@ const DB = {
     'B2': '能理解較長的對話或文章內容，並能較流暢地表達自己的觀點。可以參與較深入的討論，但在精準表達與文法細節上仍有進步空間。',
     'C1': '能理解複雜文本與抽象主題，並能清楚、有條理地表達想法。能在多數情境中自然使用法文，但仍可能在細微語感或高階詞彙上需要進一步提升。',
     'C2': '能幾乎完全理解各類型的法文內容，並能自然、流暢且精確地表達複雜觀點。語言使用接近母語者水準，能靈活運用不同語域與語氣。',
+  },
+  es: {
+    '發音': '具備基礎的西班牙文發音概念，能模仿簡單單字與短句的發音，但仍需加強顫音（R/RR）、母音純粹度及語調的自然度。建議持續透過跟讀與聽力練習提升發音準確度。',
+    'A1': '能理解並使用非常基礎的西班牙文單字與簡單句型，例如自我介紹、基本問候與日常簡單表達。理解速度較慢，需要清楚且簡單的語言輸入。',
+    'A2': '可以理解並使用常見的日常表達，例如描述個人資訊、興趣或簡單生活情境。能進行簡單對話，但在動詞變位與句型變化上仍較有限。',
+    'B1': '可以理解日常生活與熟悉主題的主要內容，並能用簡單完整句子表達自己的想法。能進行基本對話與描述經驗，但在虛擬語氣與複雜句型上仍需加強。',
+    'B2': '能理解較長的對話或文章內容，並能較流暢地表達自己的觀點。可以參與較深入的討論，但在精準表達與文法細節上仍有進步空間。',
+    'C1': '能理解複雜文本與抽象主題，並能清楚、有條理地表達想法。能在多數情境中自然使用西班牙文，但仍可能在細微語感或高階詞彙上需要進一步提升。',
+    'C2': '能幾乎完全理解各類型的西班牙文內容，並能自然、流暢且精確地表達複雜觀點。語言使用接近母語者水準，能靈活運用不同語域與語氣。',
+  },
+  de: {
+    '發音': '具備基礎的德文發音概念，能模仿簡單單字與短句的發音，但仍需加強變母音（ä/ö/ü）、ch 音及語調的自然度。建議持續透過跟讀與聽力練習提升發音準確度。',
+    'A1': '能理解並使用非常基礎的德文單字與簡單句型，例如自我介紹、基本問候與日常簡單表達。理解速度較慢，需要清楚且簡單的語言輸入。',
+    'A2': '可以理解並使用常見的日常表達，例如描述個人資訊、興趣或簡單生活情境。能進行簡單對話，但在格變化（Kasus）與動詞變位上仍較有限。',
+    'B1': '可以理解日常生活與熟悉主題的主要內容，並能用簡單完整句子表達自己的想法。能進行基本對話與描述經驗，但在從句結構與格變化運用上仍需加強。',
+    'B2': '能理解較長的對話或文章內容，並能較流暢地表達自己的觀點。可以參與較深入的討論，但在精準表達與文法細節上仍有進步空間。',
+    'C1': '能理解複雜文本與抽象主題，並能清楚、有條理地表達想法。能在多數情境中自然使用德文，但仍可能在細微語感或高階詞彙上需要進一步提升。',
+    'C2': '能幾乎完全理解各類型的德文內容，並能自然、流暢且精確地表達複雜觀點。語言使用接近母語者水準，能靈活運用不同語域與語氣。',
   }
 };
 
-const LEVEL_OPTIONS = { en:['自然發音','CEFR A1 前 - S1','CEFR A1 後 - S2','CEFR A2 前 - S3','CEFR A2 後 - S4','CEFR B1 前 - S5','CEFR B1 後 - S6','CEFR C1 - S7','CEFR C2 -S8'], ja:['入門','N5','N4','N3','N2','N1'], ko:['入門','1','2','3','4','5','6'], fr:['發音','A1','A2','B1','B2','C1','C2'] };
-const LANG_NAMES   = { en:'美語', ja:'日語', ko:'韓語', fr:'法語' };
+const LEVEL_OPTIONS = { en:['自然發音','CEFR A1 前 - S1','CEFR A1 後 - S2','CEFR A2 前 - S3','CEFR A2 後 - S4','CEFR B1 前 - S5','CEFR B1 後 - S6','CEFR C1 - S7','CEFR C2 -S8'], ja:['入門','N5','N4','N3','N2','N1'], ko:['入門','1','2','3','4','5','6'], fr:['發音','A1','A2','B1','B2','C1','C2'], es:['發音','A1','A2','B1','B2','C1','C2'], de:['發音','A1','A2','B1','B2','C1','C2'] };
+const LANG_NAMES   = { en:'美語', ja:'日語', ko:'韓語', fr:'法語', es:'西班牙語', de:'德語' };
 const LEVEL_LABELS = {
   en: { '自然發音':'自然發音','CEFR A1 前 - S1':'CEFR A1 前 - S1','CEFR A1 後 - S2':'CEFR A1 後 - S2','CEFR A2 前 - S3':'CEFR A2 前 - S3','CEFR A2 後 - S4':'CEFR A2 後 - S4','CEFR B1 前 - S5':'CEFR B1 前 - S5','CEFR B1 後 - S6':'CEFR B1 後 - S6','CEFR C1 - S7':'CEFR C1 - S7','CEFR C2 -S8':'CEFR C2 -S8' },
   ja: { '入門':'入門級','N5':'JLPT N5','N4':'JLPT N4','N3':'JLPT N3','N2':'JLPT N2','N1':'JLPT N1' },
   ko: { '入門':'入門級','1':'TOPIK 1級','2':'TOPIK 2級','3':'TOPIK 3級','4':'TOPIK 4級','5':'TOPIK 5級','6':'TOPIK 6級' },
   fr: { '發音':'發音級','A1':'CEFR A1','A2':'CEFR A2','B1':'CEFR B1','B2':'CEFR B2','C1':'CEFR C1','C2':'CEFR C2' },
+  es: { '發音':'發音級','A1':'CEFR A1','A2':'CEFR A2','B1':'CEFR B1','B2':'CEFR B2','C1':'CEFR C1','C2':'CEFR C2' },
+  de: { '發音':'發音級','A1':'CEFR A1','A2':'CEFR A2','B1':'CEFR B1','B2':'CEFR B2','C1':'CEFR C1','C2':'CEFR C2' },
 };
 // Form display labels (with English)
 const LEVEL_LABELS_FORM = {
@@ -662,6 +684,8 @@ const LEVEL_LABELS_FORM = {
   ja: { '入門':'入門級 Beginner','N5':'JLPT N5 · Beginner','N4':'JLPT N4 · Elementary','N3':'JLPT N3 · Intermediate','N2':'JLPT N2 · Upper-Intermediate','N1':'JLPT N1 · Advanced' },
   ko: { '入門':'入門級 Beginner','1':'TOPIK 1級 · Beginner','2':'TOPIK 2級 · Elementary','3':'TOPIK 3級 · Intermediate','4':'TOPIK 4級 · Upper-Intermediate','5':'TOPIK 5級 · Advanced','6':'TOPIK 6級 · Mastery' },
   fr: { '發音':'發音級 Pronunciation','A1':'CEFR A1 · Beginner','A2':'CEFR A2 · Elementary','B1':'CEFR B1 · Intermediate','B2':'CEFR B2 · Upper-Intermediate','C1':'CEFR C1 · Advanced','C2':'CEFR C2 · Mastery' },
+  es: { '發音':'發音級 Pronunciation','A1':'CEFR A1 · Beginner','A2':'CEFR A2 · Elementary','B1':'CEFR B1 · Intermediate','B2':'CEFR B2 · Upper-Intermediate','C1':'CEFR C1 · Advanced','C2':'CEFR C2 · Mastery' },
+  de: { '發音':'發音級 Pronunciation','A1':'CEFR A1 · Beginner','A2':'CEFR A2 · Elementary','B1':'CEFR B1 · Intermediate','B2':'CEFR B2 · Upper-Intermediate','C1':'CEFR C1 · Advanced','C2':'CEFR C2 · Mastery' },
 };
 
 /* ── UI helpers ── */
